@@ -1,16 +1,19 @@
 <html>
 <body>
 
-	<h1>Welcome!</h1>
+{{#isNewUser}}
+<h1>Bienvenido/a</h1>
+{{/isNewUser}}
 
-	<h1>Books</h1>
-	{{#books}}
-	<a href="books/{{id}}">{{title}}</a><br>
-	{{/books}}
+<h1>Lista de libros</h1>
 
-	{{^books}}
-	<p>No books yet.</p>
-	{{/books}}
+{{#books}}
+<a href="book/{{id}}">{{title}}</a><br>
+{{/books}}
+
+{{^books}}
+<p>No books yet.</p>
+{{/books}}
 
 </body>
 </html>

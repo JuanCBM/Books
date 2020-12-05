@@ -1,5 +1,7 @@
 package com.tsi.books.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -12,7 +14,11 @@ public class Book {
     private String editorial;
     private Integer publicationYear;
 
-    public Book(String title, String resume, String author, String editorial, Integer publicationYear) {
+    private List<Comment> commentList = new ArrayList<>();
+
+
+    public Book(String title, String resume, String author, String editorial,
+        Integer publicationYear) {
         this.title = title;
         this.resume = resume;
         this.author = author;

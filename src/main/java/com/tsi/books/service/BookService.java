@@ -1,12 +1,12 @@
 package com.tsi.books.service;
 
 import com.tsi.books.model.Book;
-import org.springframework.stereotype.Service;
-
+import com.tsi.books.model.Comment;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
@@ -14,7 +14,9 @@ public class BookService {
     private AtomicLong nextId = new AtomicLong();
 
     public BookService() {
-        save(new Book("Titulo 1", "Resumen 1", "Autor 1", "Editorial 1", 2019));
+        Book book = new Book("Titulo 1", "Resumen 1", "Autor 1", "Editorial 1", 2019);
+        book.getCommentList().add(new Comment("Miguel", "Estamos dentro", 2));
+        save(book);
         save(new Book("Titulo 2", "Resumen 2", "Autor 2", "Editorial 2", 2020));
     }
 
@@ -26,5 +28,18 @@ public class BookService {
 
     public Collection<Book> findAll() {
         return books.values();
+    }
+
+    public void add(Book book) {
+        book.setId(this.nextId.get());
+        this.books.put(this.nextId.getAndIncrement(), book);
+    }
+
+    public Book getBook(Long id) {
+        return this.books.get(id);
+    }
+
+    public Book deleteBook(Long id) {
+        return this.books.remove(id);
     }
 }
