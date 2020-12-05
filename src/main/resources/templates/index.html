@@ -3,5 +3,14 @@
 
 	<h1>Welcome!</h1>
 
+	<h1>Books</h1>
+	{{#books}}
+	<a href="books/{{id}}">{{title}}</a><br>
+	{{/books}}
+
+	{{^books}}
+	<p>No books yet.</p>
+	{{/books}}
+
 </body>
 </html>
