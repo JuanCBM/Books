@@ -1,0 +1,25 @@
+<html>
+<body>
+<h2>Nuevo libro (Número de posts: {{booksNum}})</h2>
+<form action="/book/new" method="post">
+  <p>Titulo del libro:</p>
+  <input type="text" name="title"/>
+
+  <p>Resumen:</p>
+  <textarea name="body" rows="5" cols="40"></textarea>
+
+  <p>Autor:</p>
+  <input type="text" name="author"/>
+
+  <p>Editorial:</p>
+  <input type="text" name="editorial"/>
+
+  <p>Año de publicación:</p>
+  <input type="number" name="editorial"/>
+
+  <input type="submit" value="Enviar"/>
+</form>
+
+<a href="/"> Volver al listado</a>
+</body>
+</html>

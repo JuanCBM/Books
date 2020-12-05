@@ -10,10 +10,10 @@ import org.springframework.web.context.annotation.SessionScope;
 public class UserSession {
 
   private String userName;
-  private int numPosts;
+  private int numBooks;
 
   public void addNumPosts() {
-    setNumPosts(getNumPosts() + 1);
+    setNumBooks(getNumBooks() + 1);
   }
 
 }
