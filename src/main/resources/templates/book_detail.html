@@ -8,16 +8,16 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
-<h1>Libro</h1>
+<h1>{{book.title}}</h1>
 
-<p>Titulo del libro: {{book.title}}</p>
-<p>Resumen: {{book.resume}}</p>
-<p>Autor: {{book.author}}</p>
+<p>Title: {{book.title}}</p>
+<p>Resume: {{book.resume}}</p>
+<p>Author: {{book.author}}</p>
 <p>Editorial: {{book.editorial}}</p>
 <p>Publication year: {{book.publicationYear}}</p>
 
 {{#showCommentTitle}}
-<h3>Comentarios</h3>
+<h3>Comments: </h3>
 {{/showCommentTitle}}
 
 <table class="table">

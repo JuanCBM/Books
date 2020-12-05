@@ -12,7 +12,7 @@ public class UserSession {
   private String userName;
   private int numBooks;
 
-  public void addNumPosts() {
+  public void addNumBooks() {
     setNumBooks(getNumBooks() + 1);
   }
 

@@ -35,7 +35,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{id}")
-    public String getPostDetail(Model model, @PathVariable long id) {
+    public String getBookDetail(Model model, @PathVariable long id) {
         Book book = this.bookService.getBook(id);
         model.addAttribute("book", book);
         model.addAttribute("name",
@@ -48,16 +48,16 @@ public class BookController {
 
     @GetMapping("/book/form")
     public String bookForm(Model model) {
-        model.addAttribute("booksNum", this.userSession.getNumPosts());
-        return "new_book_form";
+        model.addAttribute("booksNum", this.userSession.getNumBooks());
+        return "new_book";
     }
 
     @PostMapping("/book/new")
-    public String newBook(Model model, Book book) {
+    public String newBook(Model model, Book book,  HttpSession session) {
         this.bookService.add(book);
-        this.userSession.addNumPosts();
+        this.userSession.addNumBooks();
 
-        return "success";
+        return this.showBooks(model, session);
     }
 
     @PostMapping("/book/{id}/delete")
@@ -68,14 +68,14 @@ public class BookController {
     }
 
     @PostMapping("/book/{bookId}/newComment")
-    public String newCommentPost(Model model, @PathVariable long bookId, Comment comment) {
+    public String newCommentBook(Model model, @PathVariable long bookId, Comment comment) {
         this.userSession.setUserName(comment.getName());
         Book book = this.bookService.getBook(bookId);
         if (book != null) {
             this.commentService.save(book, comment);
         }
 
-        return this.getPostDetail(model, bookId);
+        return this.getBookDetail(model, bookId);
     }
 
     @PostMapping("/book/{bookId}/comment/{commentId}/delete")
@@ -87,7 +87,7 @@ public class BookController {
             this.commentService.delete(book,commentId);
         }
 
-        return this.getPostDetail(model, bookId);
+        return this.getBookDetail(model, bookId);
     }
 
 

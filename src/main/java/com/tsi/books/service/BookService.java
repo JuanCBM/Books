@@ -23,12 +23,6 @@ public class BookService {
         save(new Book("Harry Potter", "Un señor con una varita para gobernarlos a todos", "Jarry", "ThorialEdit", 2020));
     }
 
-    private void save(Book book) {
-        long id = nextId.getAndIncrement();
-        book.setId(id);
-        this.books.put(id, book);
-    }
-
     public Collection<Book> findAll() {
         return books.values();
     }
@@ -43,5 +37,11 @@ public class BookService {
 
     public Book deleteBook(Long id) {
         return this.books.remove(id);
+    }
+
+    private void save(Book book) {
+        long id = nextId.getAndIncrement();
+        book.setId(id);
+        this.books.put(id, book);
     }
 }
