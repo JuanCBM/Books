@@ -4,13 +4,14 @@ import com.tsi.books.model.Book;
 import com.tsi.books.model.Comment;
 import com.tsi.books.service.BookService;
 import com.tsi.books.service.UserSession;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class BookController {
@@ -66,7 +67,7 @@ public class BookController {
             book.getCommentList().add(comment);
         }
 
-        return "success";
+        return this.getPostDetail(model, bookId);
     }
 
     @PostMapping("/book/{bookId}/comment/{commentId}/delete")
@@ -78,7 +79,7 @@ public class BookController {
             book.getCommentList().remove((int) commentId);
         }
 
-        return "success";
+        return this.getPostDetail(model, bookId);
     }
 
 
