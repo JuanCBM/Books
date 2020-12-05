@@ -37,9 +37,9 @@
     <td> {{name}} </td>
     <td> {{comment}} </td>
     <td> {{rating}} </td>
-    <td><form action="/book/{{book.id}}/comment/{{id}}/delete"
-                 method="post">
-          <input type="submit" value="Borrar"/>
+    <td>
+        <form action="/book/{{book.id}}/comment/{{id}}/delete" method="post">
+          <input type="submit" value="Delete"/>
         </form>
     </td>
   </tr>

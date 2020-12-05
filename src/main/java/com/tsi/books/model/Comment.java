@@ -23,7 +23,6 @@ public class Comment {
   private int rating;
 
   public Comment(String name, String comment, int rating) {
-    this.id = (long) 0;
     this.name = name;
     this.comment = comment;
     this.rating = rating;

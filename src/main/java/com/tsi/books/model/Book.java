@@ -1,8 +1,9 @@
 package com.tsi.books.model;
 
+import lombok.Data;
+
 import java.util.ArrayList;
 import java.util.List;
-import lombok.Data;
 
 @Data
 public class Book {
@@ -16,7 +17,6 @@ public class Book {
 
     private List<Comment> commentList = new ArrayList<>();
 
-
     public Book(String title, String resume, String author, String editorial,
         Integer publicationYear) {
         this.title = title;
@@ -24,5 +24,13 @@ public class Book {
         this.author = author;
         this.editorial = editorial;
         this.publicationYear = publicationYear;
+    }
+
+    public void addComment(Comment comment){
+        this.commentList.add(comment);
+    }
+
+    public void deleteComment(Long commentId) {
+        this.commentList.removeIf(c -> c.getId().equals(commentId));
     }
 }

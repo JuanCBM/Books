@@ -29,16 +29,18 @@
         <td> {{-index}} </td>
         <td> <a href="book/{{id}}">{{title}} </a></td>
         <td>
-            <a href="/book/{{id}}/delete">Delete post</a>
+            <form action="/book/{{id}}/delete" method="post">
+                <input type="submit" value="Delete"/>
+            </form>
         </td>
     </tr>
     {{/books}}
 
     {{^books}}
     <tr>
-        <td> 0 </td>
-        <td> <a href="book/{{id}}">No books yet.</a></td>
-        <td>  </td>
+        <td></td>
+        <td> No books yet.</td>
+        <td></td>
         </td>
     </tr>
     {{/books}}

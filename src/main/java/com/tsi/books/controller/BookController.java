@@ -3,6 +3,7 @@ package com.tsi.books.controller;
 import com.tsi.books.model.Book;
 import com.tsi.books.model.Comment;
 import com.tsi.books.service.BookService;
+import com.tsi.books.service.CommentService;
 import com.tsi.books.service.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/")
     public String showBooks(Model model, HttpSession session) {
@@ -44,18 +48,23 @@ public class BookController {
 
     @GetMapping("/book/form")
     public String bookForm(Model model) {
-
-        model.addAttribute("postsNum", this.userSession.getNumPosts());
+        model.addAttribute("booksNum", this.userSession.getNumPosts());
         return "new_book_form";
     }
 
     @PostMapping("/book/new")
-    public String newPost(Model model, Book book) {
-
+    public String newBook(Model model, Book book) {
         this.bookService.add(book);
         this.userSession.addNumPosts();
 
         return "success";
+    }
+
+    @PostMapping("/book/{id}/delete")
+    public String deleteBook(Model model, @PathVariable long id, HttpSession session) {
+        this.bookService.deleteBook(id);
+
+        return this.showBooks(model, session);
     }
 
     @PostMapping("/book/{bookId}/newComment")
@@ -63,8 +72,7 @@ public class BookController {
         this.userSession.setUserName(comment.getName());
         Book book = this.bookService.getBook(bookId);
         if (book != null) {
-            comment.setId((long) book.getCommentList().size());
-            book.getCommentList().add(comment);
+            this.commentService.save(book, comment);
         }
 
         return this.getPostDetail(model, bookId);
@@ -76,7 +84,7 @@ public class BookController {
         Book book = this.bookService.getBook(bookId);
 
         if (book != null) {
-            book.getCommentList().remove((int) commentId);
+            this.commentService.delete(book,commentId);
         }
 
         return this.getPostDetail(model, bookId);
