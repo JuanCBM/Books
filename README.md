@@ -17,7 +17,8 @@
 * Github: [@mahuerta](https://github.com/mahuerta)
 
 ### Práctica
-Swagger: [Swagger](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/)
+Configurada una documentación con Swagger: 
+[http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/](http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config#/)
 
 ### Datos
 Para poblar la aplicación de datos se debe ejecutar:
