@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class CommentService {
+public class CommentsService {
     private AtomicLong nextId = new AtomicLong();
 
     public void save(Book book, Comment comment) {

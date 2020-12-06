@@ -7,7 +7,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+<body style="margin:10px">
 
 {{#isNewUser}}
 <h1>Bienvenido/a</h1>
@@ -15,7 +15,7 @@
 
 <h1>Lista de libros</h1>
 
-<a href="/book/form">Nuevo libro</a>
+<a href="/books/form">Nuevo libro</a>
 <table class="table">
     <thead>
     <tr>
@@ -28,9 +28,9 @@
     {{#books}}
     <tr>
         <td> {{-index}} </td>
-        <td><a href="/book/{{id}}">{{title}} </a></td>
+        <td><a href="/books/{{id}}">{{title}} </a></td>
         <td>
-            <form action="/book/{{id}}/delete" method="post">
+            <form action="/books/{{id}}/delete" method="post">
                 <input type="submit" value="Delete"/>
             </form>
         </td>
