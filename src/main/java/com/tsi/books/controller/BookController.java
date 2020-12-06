@@ -5,6 +5,9 @@ import com.tsi.books.model.Comment;
 import com.tsi.books.service.BookService;
 import com.tsi.books.service.CommentService;
 import com.tsi.books.service.UserSession;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpSession;
-
 @Controller
+@Api(value = "Book Controller")
 public class BookController {
 
     @Autowired
@@ -34,6 +36,7 @@ public class BookController {
         return "index";
     }
 
+    @ApiOperation(value = "Find a book", notes = "Return a book by Id")
     @GetMapping("/book/{id}")
     public String getBookDetail(Model model, @PathVariable long id) {
         Book book = this.bookService.getBook(id);
@@ -60,6 +63,7 @@ public class BookController {
         return this.showBooks(model, session);
     }
 
+    @ApiOperation(value = "Delete a book", notes = "Delete a book by Id")
     @PostMapping("/book/{id}/delete")
     public String deleteBook(Model model, @PathVariable long id, HttpSession session) {
         this.bookService.deleteBook(id);
@@ -67,6 +71,7 @@ public class BookController {
         return this.showBooks(model, session);
     }
 
+    @ApiOperation(value = "Create a comment in a book", notes = "Create a new comment about the book with rating")
     @PostMapping("/book/{bookId}/newComment")
     public String newCommentBook(Model model, @PathVariable long bookId, Comment comment) {
         this.userSession.setUserName(comment.getName());
@@ -78,6 +83,7 @@ public class BookController {
         return this.getBookDetail(model, bookId);
     }
 
+    @ApiOperation(value = "Delete a comment from a book", notes = "Delete a comment that stay in a book by Id")
     @PostMapping("/book/{bookId}/comment/{commentId}/delete")
     public String deleteComment(Model model, @PathVariable long bookId,
         @PathVariable long commentId) {
