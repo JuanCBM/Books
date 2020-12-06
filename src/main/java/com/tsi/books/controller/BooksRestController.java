@@ -79,6 +79,18 @@ public class BooksRestController {
         }
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Book created",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class)
+                    )
+                    }
+            ),
+
+    })
     @PostMapping({"/", ""})
     public ResponseEntity<Book> createBook(@RequestBody Book book) {
         this.booksService.save(book);
@@ -87,8 +99,23 @@ public class BooksRestController {
         return ResponseEntity.created(location).body(book);
     }
 
+
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Comment created",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class)
+                    )
+                    }
+            ),
+    })
     @PostMapping("/{bookId}/comments")
-    public ResponseEntity<Book> newCommentBook(@PathVariable long bookId, @RequestBody Comment comment) {
+    public ResponseEntity<Book> newCommentBook(
+            @Parameter(description = "id of the book to create comment")
+            @PathVariable long bookId,
+            @RequestBody Comment comment) {
         Book book = this.booksService.getBook(bookId);
         if (book != null) {
             this.commentsService.save(book, comment);
@@ -99,9 +126,32 @@ public class BooksRestController {
         return ResponseEntity.created(location).body(book);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Comment deleted",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class)
+                    )
+                    }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Book not found",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Book.class)
+                    )
+                    }
+            )
+    })
     @GetMapping("/{bookId}/comments/{commentId}/delete")
-    public ResponseEntity<Book> deleteComment(@PathVariable long bookId,
-                                              @PathVariable long commentId) {
+    public ResponseEntity<Book> deleteComment(
+            @Parameter(description = "id of the book to delete comment")
+            @PathVariable long bookId,
+            @Parameter(description = "id of the comment to delete")
+            @PathVariable long commentId) {
         Book book = this.booksService.getBook(bookId);
 
         if (book != null) {
@@ -112,6 +162,17 @@ public class BooksRestController {
         }
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Initial data created",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = String.class)
+                    )
+                    }
+            ),
+    })
     @PostMapping("/default-data")
     public ResponseEntity<String> loadDefaultData() {
         Book book = new Book("El señor de los Anillos", "Un señor con un anillo para gobernarlos a todos", "Frodo", "Edithorial", 2019);
