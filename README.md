@@ -23,3 +23,7 @@ Configurada una documentación con Swagger:
 ### Datos
 Para poblar la aplicación de datos se debe ejecutar:
 [http://localhost:8080/rest/books/default-data](http://localhost:8080/rest/books/default-data)
+
+### Aplicación
+Ruta a la aplicación:
+[http://localhost:8080/books](http://localhost:8080/books)
