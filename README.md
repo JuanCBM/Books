@@ -27,3 +27,6 @@ Para poblar la aplicación de datos se debe ejecutar:
 ### Aplicación
 Ruta a la aplicación:
 [http://localhost:8080/books](http://localhost:8080/books)
+
+### API.md
+[https://github.com/JuanCBM/Books/blob/master/API.md](https://github.com/JuanCBM/Books/blob/master/API.md)
