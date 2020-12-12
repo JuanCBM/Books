@@ -31,7 +31,7 @@ public class Book {
     private String editorial;
 
     private Integer publicationYear;
-
+    
     @Transient
     private List<Comment> comments = new ArrayList<>();
 
