@@ -1,94 +1,114 @@
 package com.tsi.books.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.tsi.books.model.Book;
 import com.tsi.books.model.Comment;
 import com.tsi.books.service.BooksService;
 import com.tsi.books.service.CommentsService;
-import com.tsi.books.service.UserSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import java.net.URI;
+import java.util.Collection;
 
-@Controller
-@RequestMapping("books")
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
+
+@RestController
+@RequestMapping("/api/books")
 public class BooksController {
+    private final BooksService booksService;
+    private final CommentsService commentsService;
 
-    @Autowired
-    private UserSession userSession;
-
-    @Autowired
-    private BooksService booksService;
-
-    @Autowired
-    private CommentsService commentsService;
+    BooksController(BooksService booksService, CommentsService commentsService) {
+        this.booksService = booksService;
+        this.commentsService = commentsService;
+    }
 
     @GetMapping({"/", ""})
-    public String getBooks(Model model, HttpSession session) {
-        model.addAttribute("books", booksService.findAll());
-        model.addAttribute("isNewUser", session.isNew());
-
-        return "index";
+    @JsonView(Book.Basic.class)
+    public ResponseEntity<Collection<Book>> getBooks() {
+        return ResponseEntity.ok(booksService.findAll());
     }
 
     @GetMapping("/{id}")
-    public String getBook(Model model, @PathVariable long id) {
+    public ResponseEntity<Book> getBook(
+            @PathVariable long id) {
         Book book = this.booksService.getBook(id);
-        model.addAttribute("book", book);
-        model.addAttribute("name",
-            this.userSession.getUserName() != null ? this.userSession.getUserName()
-                : "");
-        model.addAttribute("showCommentTitle", book.getComments().size() > 0);
 
-        return "book_detail";
-    }
-
-    @GetMapping("/form")
-    public String bookForm(Model model) {
-        model.addAttribute("booksNum", this.userSession.getNumBooks());
-        return "new_book";
+        if (book != null) {
+            return ResponseEntity.ok(this.booksService.getBook(id));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping({"/", ""})
-    public String createBook(Model model, Book book, HttpSession session) {
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
         this.booksService.save(book);
-        this.userSession.addNumBooks();
+        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(book.getId()).toUri();
 
-        return this.getBooks(model, session);
+        return ResponseEntity.created(location).body(book);
     }
 
-    @PostMapping("/{id}/delete")
-    public String deleteBook(Model model, @PathVariable long id, HttpSession session) {
-        this.booksService.deleteBook(id);
-
-        return this.getBooks(model, session);
-    }
 
     @PostMapping("/{bookId}/comments")
-    public String newCommentBook(Model model, @PathVariable long bookId, Comment comment) {
-        this.userSession.setUserName(comment.getName());
+    public ResponseEntity<Comment> newCommentBook(
+            @PathVariable long bookId,
+            @RequestBody Comment comment) {
         Book book = this.booksService.getBook(bookId);
         if (book != null) {
             this.commentsService.save(book, comment);
         }
 
-        return this.getBook(model, bookId);
+        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(comment.getId()).toUri();
+
+        return ResponseEntity.created(location).body(comment);
     }
 
-    @PostMapping("/{bookId}/comments/{commentId}/delete")
-    public String deleteComment(Model model, @PathVariable long bookId,
-        @PathVariable long commentId) {
+    @GetMapping("/{bookId}/comments/{commentId}/delete")
+    public ResponseEntity<Book> deleteComment(
+            @PathVariable long bookId,
+            @PathVariable long commentId) {
         Book book = this.booksService.getBook(bookId);
 
         if (book != null) {
-            this.commentsService.delete(book,commentId);
+            this.commentsService.delete(book, commentId);
+            return ResponseEntity.ok(book);
+        } else {
+            return ResponseEntity.notFound().build();
         }
-        return this.getBook(model, bookId);
+    }
+
+    @GetMapping("/{bookId}/delete")
+    public ResponseEntity<Book> deleteBook(
+            @PathVariable long bookId) {
+        Book book = this.booksService.getBook(bookId);
+
+        if (book != null) {
+            this.booksService.deleteBook(bookId);
+            return ResponseEntity.ok(book);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/default-data")
+    public ResponseEntity<String> loadDefaultData() {
+        Book book = new Book("El señor de los Anillos",
+                "Un señor con un anillo para gobernarlos a todos", "Frodo", "Edithorial", 2019);
+        Book book2 = new Book("Harry Potter", "Un señor con una varita para gobernarlos a todos",
+                "Jarry", "ThorialEdit", 2020);
+
+        this.booksService.save(book);
+        this.booksService.save(book2);
+
+        Comment comment = new Comment("Pepe", "Me gusta mucho la peli", 5);
+        Comment comment2 = new Comment("Juan", "No me gusta mucho la peli", 1);
+
+        this.commentsService.save(book, comment);
+        this.commentsService.save(book2, comment2);
+
+        return ResponseEntity.ok("OK");
     }
 
 }

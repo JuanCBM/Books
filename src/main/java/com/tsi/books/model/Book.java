@@ -1,33 +1,38 @@
 package com.tsi.books.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.NotNull;
-import lombok.Data;
-import nonapi.io.github.classgraph.json.Id;
 
 @Data
+@NoArgsConstructor
+@Entity
 public class Book {
 
     public interface Basic {
-
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @JsonView(Basic.class)
     private Long id;
 
-    @NotNull
     @JsonView(Basic.class)
     private String title;
-    @NotNull
+
     private String resume;
-    @NotNull
+
     private String author;
-    @NotNull
+
     private String editorial;
-    @NotNull
+
     private Integer publicationYear;
 
     private List<Comment> comments = new ArrayList<>();
