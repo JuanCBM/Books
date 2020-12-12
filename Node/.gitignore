@@ -697,6 +697,13 @@ MigrationBackup/
 
 # End of https://www.gitignore.io/api/node,linux,macos,windows,intellij,webstorm,jetbrains,visualstudio,visualstudiocode
 
-Node/.idea/*
+.idea/*
 /package-lock.json
 /books.iml
+.idea/.gitignore
+.idea/misc.xml
+.idea/modules.xml
+.idea/Node.iml
+.idea/vcs.xml
+
+
