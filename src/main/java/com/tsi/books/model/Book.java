@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +32,7 @@ public class Book {
 
     private Integer publicationYear;
 
+    @Transient
     private List<Comment> comments = new ArrayList<>();
 
     public Book(String title, String resume, String author, String editorial,
