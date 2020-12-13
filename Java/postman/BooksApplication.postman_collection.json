@@ -176,6 +176,27 @@
 			"name": "users",
 			"item": [
 				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getUser",
 					"request": {
 						"method": "GET",
@@ -204,7 +225,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nick\": \"jua_ma\",\r\n    \"email\": \"mimail@email.com\"\r\n}",
+							"raw": "{\r\n    \"nick\": \"jua_ma2\",\r\n    \"email\": \"mimail@email.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
