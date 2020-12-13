@@ -5,6 +5,7 @@ import com.tsi.books.dtos.requests.CommentRequestDto;
 import com.tsi.books.dtos.responses.BookDetailsResponseDto;
 import com.tsi.books.dtos.responses.BookResponseDto;
 import com.tsi.books.exceptions.BookNotFoundException;
+import com.tsi.books.exceptions.CommentNotFoundException;
 import com.tsi.books.models.Book;
 import com.tsi.books.models.Comment;
 import com.tsi.books.models.User;
@@ -23,7 +24,7 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final UserService userService;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     BookServiceImpl(BookRepository bookRepository, UserService userService) {
         this.modelMapper = new ModelMapper();
@@ -89,8 +90,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookDetailsResponseDto deleteComment(Long idBook, Long commentId) {
         Book book = this.bookRepository.findById(idBook).orElseThrow(BookNotFoundException::new);
-        book.removeComment(commentId);
-        this.bookRepository.save(book);
+        if (book.removeComment(commentId)) {
+            this.bookRepository.save(book);
+        } else {
+            throw new CommentNotFoundException();
+        }
 
         return this.modelMapper.map(book, BookDetailsResponseDto.class);
     }

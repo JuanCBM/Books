@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+    
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     UserServiceImpl(UserRepository userRepository, CommentRepository commentRepository) {
         this.modelMapper = new ModelMapper();

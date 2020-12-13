@@ -45,7 +45,7 @@ public class Book {
         comment.setBook(this);
     }
 
-    public void removeComment(Long commentId) {
-        comments.removeIf(c -> c.getId().equals(commentId));
+    public boolean removeComment(Long commentId) {
+        return comments.removeIf(c -> c.getId().equals(commentId));
     }
 }

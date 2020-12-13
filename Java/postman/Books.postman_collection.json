@@ -88,7 +88,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"comment\": \"Me gusta bastente poco la peli\",\r\n    \"rating\": 3,\r\n    \"nick\": \"jua_ma\"\r\n}",
+							"raw": "{\r\n    \"content\": \"Me gusta bastente poco la peli\",\r\n    \"rating\": 3,\r\n    \"nick\": \"jua_ma\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -222,6 +222,37 @@
 								"api",
 								"v1",
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"mimail2@email.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"1"
 							]
 						}
 					},
