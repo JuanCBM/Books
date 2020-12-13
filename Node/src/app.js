@@ -1,32 +1,23 @@
 const mongoose =require('mongoose');
-const bookApiController= require('./routes/bookApiController');
-const bodyParser = require('body-parser');
 const express = require('express');
+const app = express();
 
 const uri = 'mongodb://localhost:27017';
 
-/*mongoose.connect(uri, options, () => {
-  console.log('Connected to MongoDB...');
-  console.log('');
-});*/
+mongoose.connect(uri,
+    { useUnifiedTopology: true,
+             useNewUrlParser: true,
+             useFindAndModify: false })
+    .then(console.log("Connected to database"))
+    .catch((error) => console.error(error));
 
+app.use(express.json());
 
-mongoose
-.connect(uri)
-.then(_ => {
-  app.listen(process.env.PORT || 3000);
-})
-.catch(err => {
-  console.log(err);
-});
+// BooksRouter
+const bookRouter= require('./routes/books');
+app.use('/books',bookRouter)
 
-const app = express();
+// TODO: User router
 
-// Middelware
-app.use(bodyParser.json());
-app.use('/', bookApiController);
+app.listen(3000,()=> console.log('Server started: app.js ...'));
 
-//export default app;
-module.exports = {app:app}
-
-console.log('Executing Server: app.js ...');
