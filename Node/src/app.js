@@ -1,21 +1,32 @@
+const mongoose =require('mongoose');
+const bookApiController= require('./routes/bookApiController');
+const bodyParser = require('body-parser');
 const express = require('express');
-const postsRouter = require('./post.js').router;
-const postsInit = require('./post.js').init;
+
+const uri = 'mongodb://localhost:27017';
+
+/*mongoose.connect(uri, options, () => {
+  console.log('Connected to MongoDB...');
+  console.log('');
+});*/
+
+
+mongoose
+.connect(uri)
+.then(_ => {
+  app.listen(process.env.PORT || 3000);
+})
+.catch(err => {
+  console.log(err);
+});
 
 const app = express();
 
-//Convert json bodies to JavaScript object
-app.use(express.json());
+// Middelware
+app.use(bodyParser.json());
+app.use('/', bookApiController);
 
-app.use(postsRouter);
+//export default app;
+module.exports = {app:app}
 
-async function main() {
-
-  await postsInit();
-
-  app.listen(3000, () => {
-    console.log('Example app listening on port 3000!');
-  });
-}
-
-main();
+console.log('Executing Server: app.js ...');
