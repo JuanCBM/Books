@@ -1,14 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const Book = require('../models/book')
+const Book = require('../schemas/book')
+const Comment = require('../schemas/comment')
 const mongoose = require('mongoose');
+const BookService = require("../services/bookService");
+const bookService = new BookService();
 
 module.exports = router
 
 // TODO: debe traer sólo id y titulo
 router.get('/', async (req,res)=> {
   try{
-    const books = await Book.find()
+    const books = await Book.find();
     res.json(toResponse(books));
   }catch (error) {
     res.status(500).json({message: err.message})
@@ -27,48 +30,57 @@ router.get('/:id', async (req,res)=> {
   if (!book) {
     res.sendStatus(404);
   } else {
-    res.json(toResponse(book));
+    res.json(book);
   }
 })
 
 // TODO: añadir el resto de info del libro al crear y el nick del usuario
 router.post('/', async (req,res)=> {
   const book = new Book({
-    name: req.body.title,
     title: req.body.title,
-    content: req.body.content
+    resume: req.body.resume,
+    author: req.body.author,
+    publicationYear: req.body.publicationYear,
+    editorial: req.body.editorial
   })
   try{
-    const newBook = await book.save()
+    const newBook = await bookService.addBook(book)
     res.status(201).json(newBook)
   }catch (e){
-    res.status(400).json({message: err.message})
+    res.status(400).json({message: e.message})
   }
 
 })
 
 // Delete book
-router.delete('/:id', async (req,res)=> {
-  const id = req.params.id;
+router.delete('/:bookId', async (req,res)=> {
+  const bookId = req.params.id;
 
-  if(!mongoose.Types.ObjectId.isValid(id)){
+  if(!mongoose.Types.ObjectId.isValid(bookId)){
     return res.sendStatus(400);
   }
-
-  const book = await Book.findById(id);
+  const book = await bookService.deleteBookById(bookId);
   if (!book) {
     res.sendStatus(404);
   } else {
-    await Book.findByIdAndDelete(id);
     res.json(toResponse(book));
   }
-
 })
 
 
-// TODO: Add comment book, deberá incluir el nick del usuario
-router.post('/:id/comment', async (req,res)=> {
-
+router.post('/:id/comments', async (req,res)=> {
+  const comment = new Comment({
+    rating: req.body.rating,
+    content: req.body.content,
+    nick: req.body.nick
+  });
+  const bookId = req.params.id;
+  const book = await bookService.addComment(bookId,comment);
+  if (!book) {
+    res.sendStatus(404);
+  } else {
+    res.json(toResponse(book));
+  }
 })
 
 // TODO: Delete comment book
@@ -82,7 +94,6 @@ function toResponse(document) {
     return document.map(elem => toResponse(elem));
   } else {
     let response = document.toObject({ versionKey: false });
-    response.id = response._id.toString();
     delete response._id;
     return response;
   }

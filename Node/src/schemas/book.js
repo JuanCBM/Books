@@ -6,8 +6,8 @@ const bookSchema = new Schema({
   resume: String,
   editorial: String,
   publicationYear: Number,
-  _creator: { type: Schema.ObjectId, ref: 'User' },
+  author: String,
   _comments: [{ type: Schema.ObjectId, ref: 'Comment' }],
 });
 
-module.exports = mongoose.model('Book', bookSchema)
+module.exports = mongoose.model('Book', bookSchema);
