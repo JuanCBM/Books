@@ -20,10 +20,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     UserServiceImpl(UserRepository userRepository, CommentRepository commentRepository) {
         this.modelMapper = new ModelMapper();
@@ -86,6 +86,13 @@ public class UserServiceImpl implements UserService {
     public Collection<CommentDetailsResponseDto> findCommentsById(Long id) {
         return this.commentRepository.findByUserId(id).stream()
                 .map(comment -> this.modelMapper.map(comment, CommentDetailsResponseDto.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<UserResponseDto> findAll() {
+        return this.userRepository.findAll().stream()
+                .map(user -> this.modelMapper.map(user, UserResponseDto.class))
                 .collect(Collectors.toList());
     }
 

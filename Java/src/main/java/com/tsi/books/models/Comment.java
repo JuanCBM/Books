@@ -18,7 +18,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String comment;
+    private String content;
     private int rating;
 
     @ManyToOne
@@ -26,11 +26,5 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Book book;
-
-    public Comment(String comment, int rating, User user) {
-        this.comment = comment;
-        this.rating = rating;
-        this.user = user;
-    }
 
 }
