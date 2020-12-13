@@ -8,7 +8,7 @@ import lombok.Data;
 public class CommentRequestDto {
 
     private String nick;
-    private String comment;
+    private String content;
     private int rating;
 
 }

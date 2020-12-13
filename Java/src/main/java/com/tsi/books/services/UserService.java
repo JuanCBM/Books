@@ -19,4 +19,6 @@ public interface UserService {
     UserResponseDto deleteById(Long id);
 
     Collection<CommentDetailsResponseDto> findCommentsById(Long id);
+
+    Collection<UserResponseDto> findAll();
 }

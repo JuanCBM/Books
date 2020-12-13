@@ -6,7 +6,7 @@ import lombok.Data;
 public class CommentDetailsResponseDto {
 
     private Long id;
-    private String comment;
+    private String content;
     private int rating;
     private BookResponseDto book;
 
