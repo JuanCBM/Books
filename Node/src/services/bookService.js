@@ -1,8 +1,6 @@
 const ObjectId = require('mongodb').ObjectID;
 const Book = require('../schemas/book')
 const Comment = require('../schemas/comment')
-const UserService = require("../services/userService");
-const userService = new UserService();
 
 class BookService {
   constructor(){}
@@ -62,14 +60,15 @@ class BookService {
 //TODO BUSCAR AL USUSARIO Y VERIFICAR QUE ESTA EN LA BBDD
   async addComment(bookId, comment) {
     try {
+      const commentToUpdate = await Comment.create(comment);
+      //const user = await userService.getUserByNick(comment.nick);
+
+      //const queryComment = {$set: {_creator: {_id: new ObjectId(user._id)}}};
+      //comment = await Comment.findOneAndUpdate(queryComment,comment);
+
+      const newValues = {$push: {_comments: commentToUpdate}};
+
       const query = {_id: new ObjectId(bookId)};
-      let comment = await Comment.create(comment);
-      const user = await userService.getUserByNick(comment.nick);
-
-      const queryComment = {$set: {_creator: {_id: new ObjectId(user._id)}}};
-      comment = await Comment.findOneAndUpdate(queryComment,comment);
-
-      const newValues = {$push: {_comments: comment}};
       await Book.findOneAndUpdate(query, newValues);
       return comment;
     } catch (error) {

@@ -71,8 +71,8 @@ router.delete('/:bookId', async (req,res)=> {
 router.post('/:id/comments', async (req,res)=> {
   const comment = new Comment({
     rating: req.body.rating,
-    content: req.body.content,
-    nick: req.body.nick
+    content: req.body.content
+    //nick: req.body.nick
   });
   const bookId = req.params.id;
   const book = await bookService.addComment(bookId,comment);
