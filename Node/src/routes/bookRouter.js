@@ -20,7 +20,7 @@ router.get('/', async (req,res)=> {
   }
 })
 
-// Obtiene comentarios TODO: Dentro del comentario el nick y mail del usuario.
+// Obtiene libro TODO: Dentro del comentario no sólo el id, traerse el nick y mail del usuario.
 router.get('/:id', async (req,res)=> {
   const id = req.params.id;
 
@@ -97,9 +97,11 @@ router.put('/:id', async (req,res)=> {
 router.post('/:id/comments', async (req,res)=> {
   const comment = new Comment({
     rating: req.body.rating,
-    content: req.body.content,
-    nick: req.body.nick
+    content: req.body.content
   });
+
+  comment.nick = req.body.nick
+
   const bookId = req.params.id;
   const book = await bookService.addComment(bookId,comment);
   if (!book) {
@@ -109,7 +111,7 @@ router.post('/:id/comments', async (req,res)=> {
   }
 })
 
-// TODO: Delete comment book
+// Delete comment
 router.delete('/:idBook/comments/:idComment', async (req,res)=> {
   const bookId = req.params.idBook;
   const commentId = req.params.idComment;

@@ -41,19 +41,19 @@ router.post('/', async (req,res)=> {
     email: req.body.email
   })
   let checkUser = await User.findOne({'nick':user.nick});
-  if(!checkUser)
-    try{
-      checkUser = await User.findOne({'email':user.email});
-      if(!checkUser){
+  if(!checkUser) {
+    try {
+      checkUser = await User.findOne({'email': user.email});
+      if (!checkUser) {
         const newUser = await userService.addUser(user);
-        res.status(201).json(toResponse(newUser,template.FULL));
+        res.status(201).json(toResponse(newUser, template.FULL));
       } else
-        return res.status(409).send({message: 'Email is already taken.'})
-    }catch (e){
-        res.status(400).json({message: e.message})
+        return res.status(400).send({message: 'Email is already taken.'})
+    } catch (e) {
+      res.status(400).json({message: e.message})
     }
-  else{
-    return res.status(409).send({message: 'Username is already taken.'})
+  }else{
+    return res.status(400).send({message: 'Username is already taken.'})
   }
 })
 
@@ -70,7 +70,11 @@ router.delete('/:id', async (req,res)=> {
     res.sendStatus(404);
   } else {
     const deleteUser = await userService.deleteUserById(userId);
-    res.json(toResponse(deleteUser,template.FULL));
+    if (!deleteUser) {
+      return res.status(403).send({message: 'User has comments'})
+    }else{
+      res.json(toResponse(deleteUser,template.FULL));
+    }
   }
 
 })
@@ -87,14 +91,14 @@ router.put('/:id/email', async (req,res)=> {
       res.json(toResponse(userUpdated,template.FULL));
     }
   } else
-    return res.status(409).send({message: 'Email is already taken.'})
+    return res.status(400).send({message: 'Email is already taken.'})
   })
 
 
 router.get('/:id/comments', async (req,res)=> {
   try{
     const userId = req.params.id;
-    const comments = userService.getAllComments(userId);
+    const comments = await userService.getAllComments(userId);
     res.json(toResponse(comments,template.FULL));
   }catch (error) {
     res.status(500).json({message: error.message})

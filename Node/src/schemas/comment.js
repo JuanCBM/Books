@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const commentSchema = new Schema({
   content: { type: String, required: true },
   rating: { type:Number, min:0 , max:5},
-  _creator: { type: Schema.ObjectId, ref: 'User' }
+  _user: { type: Schema.ObjectId, ref: 'User' }
 });
 
 /*const autoPopulateCreator = function(next) {

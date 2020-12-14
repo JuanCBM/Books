@@ -1,7 +1,8 @@
 const ObjectId = require('mongodb').ObjectID;
 const Book = require('../schemas/book')
 const Comment = require('../schemas/comment')
-
+const UserService = require("../services/userService");
+const userService = new UserService();
 class BookService {
   constructor(){}
 
@@ -17,7 +18,7 @@ class BookService {
   async getBookById(id) {
     const query = {_id: new ObjectId(id)};
     try {
-      const book = await Book.find(query).populate("_comments");
+      const book = await Book.find(query).populate("_comments").populate("_user");
       if (book != null) {
         return book
       }
@@ -68,22 +69,17 @@ class BookService {
     }
   }
 
-
-
-//TODO BUSCAR AL USUSARIO Y VERIFICAR QUE ESTA EN LA BBDD
   async addComment(bookId, comment) {
     try {
-      const commentToUpdate = await Comment.create(comment);
-      //const user = await userService.getUserByNick(comment.nick);
+      const user = await userService.getUserByNick(comment.nick);
+      comment._user = user;
 
-      //const queryComment = {$set: {_creator: {_id: new ObjectId(user._id)}}};
-      //comment = await Comment.findOneAndUpdate(queryComment,comment);
+      const commentToUpdate = await Comment.create(comment);
 
       const newValues = {$push: {_comments: commentToUpdate}};
-
       const query = {_id: new ObjectId(bookId)};
       await Book.findOneAndUpdate(query, newValues);
-      return comment;
+      return this.getBookById(bookId)
     } catch (error) {
       throw error;
     }
@@ -92,10 +88,11 @@ class BookService {
   async deleteComment(bookId, commentId) {
     const newValues = {$pull: {_comments: {_id: new ObjectId(commentId)}}};
     const query = {_id: new ObjectId(bookId)};
-    const queryComment = {_id: new ObjectId(bookId)};
+    const queryComment = {_id: new ObjectId(commentId)};
     try {
       await Comment.deleteOne(queryComment);
-      return await Book.findOneAndUpdate(query, newValues);
+      await Book.findOneAndUpdate(query, newValues);
+      return this.getBookById(bookId)
     } catch (error) {
       throw error;
     }

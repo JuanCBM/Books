@@ -48,10 +48,14 @@ class UserService {
 
   async deleteUserById(userId) {
     try {
-      const comments = await Comment.findOne({_creator:new ObjectId(userId)});
-      const query = {_id: new ObjectId(userId),};
-      if(!comments)
+      const comments = await Comment.findOne({_user:new ObjectId(userId)});
+      const query = {_id: new ObjectId(userId)};
+      if(!comments){
         return await User.findOneAndRemove(query);
+      }
+      else{
+        return null
+      }
     } catch (error) {
       throw error;
     }
@@ -67,10 +71,11 @@ class UserService {
       throw error;
     }
   }
-//TODO buscar el titulo del libro
+
+  //TODO buscar el titulo del libro
   async getAllComments(userId) {
     try {
-      return await Comment.find({_creator:new ObjectId(userId)});
+      return await Comment.find({_user:new ObjectId(userId)});
     } catch (error) {
       throw error;
     }
