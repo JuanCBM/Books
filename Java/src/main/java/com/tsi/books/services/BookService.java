@@ -19,4 +19,6 @@ public interface BookService {
     BookDetailsResponseDto addComment(Long idBook, CommentRequestDto comment);
 
     BookDetailsResponseDto deleteComment(Long idBook, Long commentId);
+
+    BookDetailsResponseDto update(Long idBook, BookRequestDto bookRequestDto);
 }

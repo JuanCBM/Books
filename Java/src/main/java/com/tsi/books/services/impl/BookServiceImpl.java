@@ -98,4 +98,15 @@ public class BookServiceImpl implements BookService {
 
         return this.modelMapper.map(book, BookDetailsResponseDto.class);
     }
+
+    @Override
+    public BookDetailsResponseDto update(Long idBook, BookRequestDto bookRequestDto) {
+        this.bookRepository.findById(idBook).orElseThrow(BookNotFoundException::new);
+
+        Book book = this.modelMapper.map(bookRequestDto, Book.class);
+        book.setId(idBook);
+        book = this.bookRepository.save(book);
+
+        return this.modelMapper.map(book, BookDetailsResponseDto.class);
+    }
 }

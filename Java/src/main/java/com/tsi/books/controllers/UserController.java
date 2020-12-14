@@ -41,7 +41,7 @@ public class UserController {
         return ResponseEntity.created(location).body(user);
     }
 
-    @PutMapping({"/{id}"})
+    @PutMapping({"/{id}/email"})
     public ResponseEntity<UserResponseDto> update(@PathVariable Long id, @RequestBody UserRequestDto user) {
         return ResponseEntity.ok(this.userService.updateMail(id, user));
     }
