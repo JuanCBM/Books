@@ -82,6 +82,37 @@
 					"response": []
 				},
 				{
+					"name": "putBook",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"El señor de los Anillos Madrid, las cuatro torres\",\r\n    \"resume\": \"Un señor con cinco anillos para gobernarlos a todos\",\r\n    \"author\": \"Sam\",\r\n    \"editorial\": \"EdiTHORial22\",\r\n    \"publicationYear\": 2022\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/api/v1/books/5fd7909c1c4b8d0670b19e81",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"api",
+								"v1",
+								"books",
+								"5fd7909c1c4b8d0670b19e81"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "createComment",
 					"request": {
 						"method": "POST",
@@ -96,7 +127,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/books/3/comments",
+							"raw": "http://localhost:{{port}}/api/v1/books/5fd7909c1c4b8d0670b19e81/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -106,7 +137,7 @@
 								"api",
 								"v1",
 								"books",
-								"3",
+								"5fd7909c1c4b8d0670b19e81",
 								"comments"
 							]
 						}
@@ -128,7 +159,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/books/3/comments/6",
+							"raw": "http://localhost:{{port}}/api/v1/books/5fd7909c1c4b8d0670b19e81/comments/5fd790a71c4b8d0670b19e84",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -138,9 +169,9 @@
 								"api",
 								"v1",
 								"books",
-								"3",
+								"5fd7909c1c4b8d0670b19e81",
 								"comments",
-								"6"
+								"5fd790a71c4b8d0670b19e84"
 							]
 						}
 					},
@@ -152,7 +183,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/api/v1/books/3",
+							"raw": "http://localhost:{{port}}/api/v1/books/5fd7868913154715cc8825be",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -162,7 +193,7 @@
 								"api",
 								"v1",
 								"books",
-								"3"
+								"5fd7868913154715cc8825be"
 							]
 						},
 						"description": "Delete a book by id"

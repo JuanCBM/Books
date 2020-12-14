@@ -6,26 +6,31 @@ class BookService {
   constructor(){}
 
   async getAllBooks() {
-    return Book.find();
-  }
-
-  async addBook(book) {
     try {
-      await Book.create(book);
-      return book;
+      const books = await Book.find()
+      return books
     } catch (error) {
-      throw error;
+      throw error
     }
   }
 
   async getBookById(id) {
     const query = {_id: new ObjectId(id)};
     try {
-      const book = await Book.findOne(query);
+      const book = await Book.find(query).populate("_comments");
       if (book != null) {
-        return book;
+        return book
       }
       throw {status: 404, message: 'Book not found'};
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async addBook(book) {
+    try {
+      await Book.create(book);
+      return book;
     } catch (error) {
       throw error;
     }
@@ -44,19 +49,27 @@ class BookService {
 
   async updateBookById(id, book) {
     try {
-      const query = {_id: new ObjectId(id)};
-      const newValues = {$set: book};
-      await Book.findOneAndUpdate(query, newValues);
-      return book;
+      const persistedBook = await Book.findById(id);
+      if (!persistedBook) {
+        res.sendStatus(404);
+      } else {
+        persistedBook.title = book.title;
+        persistedBook.author = persistedBook.author;
+        persistedBook.resume = persistedBook.resume;
+        persistedBook.editorial = persistedBook.editorial;
+        persistedBook.publicationYear = persistedBook.publicationYear;
+      }
+
+      await persistedBook.save();
+
+      return persistedBook;
     } catch (error) {
       throw error;
     }
   }
 
-  async getBookByCommentId(commentId){
-    const query = {_comments:{$elemMatch:{_id:new ObjectId(commentId)}}};
-    return Book.findOne(query);
-  }
+
+
 //TODO BUSCAR AL USUSARIO Y VERIFICAR QUE ESTA EN LA BBDD
   async addComment(bookId, comment) {
     try {
@@ -86,6 +99,11 @@ class BookService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async getBookByCommentId(commentId){
+    const query = {_comments:{$elemMatch:{_id:new ObjectId(commentId)}}};
+    return Book.findOne(query);
   }
 
 }

@@ -16,8 +16,8 @@ app.use(express.json());
 // BooksRouter
 const bookRouter= require('./routes/bookRouter');
 const userRouter= require('./routes/userRouter');
-app.use('/books',bookRouter);
-app.use('/users',userRouter);
+app.use('/api/v1/books',bookRouter);
+app.use('/api/v1/users',userRouter);
 
 app.listen(3000,()=> console.log('Server started: app.js ...'));
 
