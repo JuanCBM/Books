@@ -13,7 +13,6 @@ mongoose.connect(uri,
 
 app.use(express.json());
 
-// BooksRouter
 const bookRouter= require('./routes/bookRouter');
 const userRouter= require('./routes/userRouter');
 app.use('/api/v1/books',bookRouter);

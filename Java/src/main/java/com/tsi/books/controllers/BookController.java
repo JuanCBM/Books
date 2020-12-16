@@ -53,18 +53,18 @@ public class BookController {
         return ResponseEntity.created(location).body(this.bookService.addComment(idBook, comment));
     }
 
-    @DeleteMapping("/{bookId}/comments/{commentId}")
+    @DeleteMapping("/{idBook}/comments/{commentId}")
     public ResponseEntity<BookDetailsResponseDto> deleteComment(
-            @PathVariable long bookId,
+            @PathVariable long idBook,
             @PathVariable long commentId) {
-        return ResponseEntity.ok(this.bookService.deleteComment(bookId, commentId));
+        return ResponseEntity.ok(this.bookService.deleteComment(idBook, commentId));
     }
 
     @PutMapping({"/{idBook}"})
     public ResponseEntity<BookDetailsResponseDto> update(
             @PathVariable long idBook,
             @RequestBody BookRequestDto bookRequestDto) {
-        
+
         return ResponseEntity.ok(this.bookService.update(idBook, bookRequestDto));
     }
 
