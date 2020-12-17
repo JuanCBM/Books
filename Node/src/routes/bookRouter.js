@@ -130,8 +130,7 @@ function toResponse(document) {
   if (document instanceof Array) {
     return document.map(elem => toResponse(elem));
   } else {
-    let response = document.toObject({ versionKey: false });
-    return response;
+    return document.toObject({versionKey: false});
   }
 }
 
