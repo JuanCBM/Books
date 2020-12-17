@@ -20,7 +20,7 @@ router.get('/', async (req,res)=> {
   }
 })
 
-// Obtiene libro TODO: Dentro del comentario no sólo el id, traerse el nick y mail del usuario.
+// Obtiene libro
 router.get('/:id', async (req,res)=> {
   const id = req.params.id;
 
@@ -32,7 +32,8 @@ router.get('/:id', async (req,res)=> {
   if (!book) {
     res.sendStatus(404);
   } else {
-    res.json(book);
+    const response = toResponse(book)
+    res.json(response);
   }
 })
 
@@ -55,8 +56,8 @@ router.post('/', async (req,res)=> {
 })
 
 // Borra un libro
-router.delete('/:id', async (req,res)=> {
-  const bookId = req.params.id;
+router.delete('/:idBook', async (req,res)=> {
+  const bookId = req.params.idBook;
 
   if(!mongoose.Types.ObjectId.isValid(bookId)){
     return res.sendStatus(400);
@@ -70,8 +71,8 @@ router.delete('/:id', async (req,res)=> {
 })
 
 // Actualiza un libro
-router.put('/:id', async (req,res)=> {
-  const bookId = req.params.id;
+router.put('/:idBook', async (req,res)=> {
+  const bookId = req.params.idBook;
   if(!mongoose.Types.ObjectId.isValid(bookId)){
     return res.sendStatus(400);
   }
@@ -94,7 +95,7 @@ router.put('/:id', async (req,res)=> {
 })
 
 // Create comment
-router.post('/:id/comments', async (req,res)=> {
+router.post('/:idBook/comments', async (req,res)=> {
   const comment = new Comment({
     rating: req.body.rating,
     content: req.body.content
@@ -102,7 +103,7 @@ router.post('/:id/comments', async (req,res)=> {
 
   comment.nick = req.body.nick
 
-  const bookId = req.params.id;
+  const bookId = req.params.idBook;
   const book = await bookService.addComment(bookId,comment);
   if (!book) {
     res.sendStatus(404);

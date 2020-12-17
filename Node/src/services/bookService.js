@@ -1,15 +1,17 @@
 const ObjectId = require('mongodb').ObjectID;
 const Book = require('../schemas/book')
 const Comment = require('../schemas/comment')
-const UserService = require("../services/userService");
+const UserService = require("./userService");
 const userService = new UserService();
+
 class BookService {
-  constructor(){}
+  constructor(){
+
+  }
 
   async getAllBooks() {
     try {
-      const books = await Book.find()
-      return books
+      return await Book.find()
     } catch (error) {
       throw error
     }
@@ -18,7 +20,14 @@ class BookService {
   async getBookById(id) {
     const query = {_id: new ObjectId(id)};
     try {
-      const book = await Book.find(query).populate("_comments").populate("_user");
+      let book = await Book.find(query).populate({
+        path    : '_comments',
+        populate:
+            [{ path: '_user',
+              select: ['nick','email']
+            }]
+      });
+
       if (book != null) {
         return book
       }
@@ -90,7 +99,7 @@ class BookService {
     const query = {_id: new ObjectId(bookId)};
     const queryComment = {_id: new ObjectId(commentId)};
     try {
-      await Comment.deleteOne(queryComment);
+      await Comment.findOneAndRemove(queryComment);
       await Book.findOneAndUpdate(query, newValues);
       return this.getBookById(bookId)
     } catch (error) {
@@ -111,9 +120,9 @@ function deleteAssociatedComments(document) {
     return document.map(elem => deleteAssociatedComments(elem));
   } else {
     let response = document.toObject({ versionKey: false });
-    response._comments.forEach(commentId=>{
+    response._comments.forEach(async commentId=>{
       const query = {_id: new ObjectId(commentId),};
-      Comment.findOneAndDelete(query);
+      await Comment.remove(query);
     });
     return response;
   }

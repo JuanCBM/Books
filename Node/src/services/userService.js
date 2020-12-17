@@ -1,8 +1,9 @@
 const ObjectId = require('mongodb').ObjectID;
 const User = require('../schemas/user');
 const Comment = require('../schemas/comment');
-/*const BookService = require("../services/bookService");
-const bookService = new BookService();*/
+//const BookService = require("./bookService");
+const BookService = require("./bookService").constructor;
+const bookService = new BookService();
 
 class UserService {
   constructor(){
@@ -75,7 +76,12 @@ class UserService {
   //TODO buscar el titulo del libro
   async getAllComments(userId) {
     try {
-      return await Comment.find({_user:new ObjectId(userId)});
+      let comments = await Comment.find({_user:new ObjectId(userId)});
+      /*await comments.forEach(async c=>{
+        const book = await bookService.getBookByCommentId(c._id);
+        c.book = book;
+      });*/
+      return comments;
     } catch (error) {
       throw error;
     }
